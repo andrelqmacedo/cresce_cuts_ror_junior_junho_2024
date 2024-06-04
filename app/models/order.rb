@@ -14,8 +14,8 @@ class Order < ApplicationRecord
 
   def process_items
     if self.status == "pending"
-      raise "A loja aceitou seu pedido! Pedido em separação!"
       self.update(status: "processing")
+      puts "A loja aceitou seu pedido! Pedido em separação!"
     else
       raise "O pedido não pôde ser separado, pois não está pendente!"
     end
@@ -23,32 +23,34 @@ class Order < ApplicationRecord
 
   def confirm_items
     if self.status == "processing" && all_items_present?
-      raise "Os itens escolhidos foram separados! Pedido confirmado!"
       self.update(status: "confirmed")
+      puts "Os itens escolhidos foram separados! Pedido confirmado!"
     else
       raise "O pedido não pôde ser confirmado, pois não foi separado!"
     end
   end
 
   def ship_order
+    order = Order.find(self.id)
     if self.status == "confirmed" && payment_received?
-      raise "Pagamento recebido! O pedido está em rota de entrega!"
       self.update(status: "en_route")
+      puts "Pagamento recebido! O pedido está em rota de entrega!"
     else
       raise "O pedido não pôde ser colocado em rota de entrega, pois não foi confirmado!"
     end
   end
 
   def make_ready_for_pickup
+    order = Order.find(self.id)
     if self.status == "confirmed" && payment_received?
-      raise "Pagamento recebido! O pedido está disponível para retirada!"
       self.update(status: "ready_for_pickup")
+      puts "Pagamento recebido! O pedido está disponível para retirada!"
     else
       raise "O pedido não está disponível para retirada, pois não foi confirmado!"
     end
   end
 
-  private
+  # private
 
   def all_items_present?
     self.order_items.all? { |item| item.present? }
