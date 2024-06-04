@@ -5,6 +5,6 @@ class Order < ApplicationRecord
   has_many :items, through: :order_items
   validates :total, :status, presence: true
 
-  STATUS = ["pending", "in_separation", "confirmed"]
+  STATUS = ["pending", "processing", "confirmed", "en_route", "ready_for_pickup"]
   validates :status, inclusion: { in: STATUS }
 end
