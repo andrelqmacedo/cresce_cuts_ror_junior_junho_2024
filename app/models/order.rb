@@ -3,13 +3,14 @@ class Order < ApplicationRecord
   belongs_to :store
   has_many :order_items
   has_many :items, through: :order_items
-  validates :total, :status, presence: true, numericality: { greater_than_or_equal_to: 0 }
+
+  validates :total, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   STATUS = ["pending", "processing", "confirmed", "en_route", "ready_for_pickup"]
-  validates :status, inclusion: { in: STATUS }
+  validates :status, presence: true, inclusion: { in: STATUS }
 
-  enum payment_status: { pending: 0, paid: 1, failed: 2}
-  validates :payment_status, enum: { pending: 0, paid: 1, failed: 2 }
+  PAYMENT_STATUS = ["pending", "paid", "cancelled"]
+  validates :payment_status, presence: true, inclusion: { in: PAYMENT_STATUS }
 
   def process_items
     if self.status == "pending"
@@ -55,7 +56,7 @@ class Order < ApplicationRecord
 
   def payment_received?
     unless payment_status == "paid"
-      raise "Pagamento não recebido!"
+      raise "O pagamento ainda não foi finalizado!"
     end
   end
 end

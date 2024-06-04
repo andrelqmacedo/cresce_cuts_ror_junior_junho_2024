@@ -59,7 +59,7 @@ Customer.all.each do |customer|
     store: store,
     total: Faker::Commerce.price,
     status: "pending",
-    payment_status: "not_received"
+    payment_status: "pending"
   )
 
   3.times do
