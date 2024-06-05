@@ -15,7 +15,7 @@ class Order < ApplicationRecord
   after_update :adjust_stock, if: :saved_change_to_status?
 
   def calculate_total
-    total = order_items.sum(&:total)
+    total = order_items.sum { |order_item| order_item.total }
     update(total: total)
   end
 
