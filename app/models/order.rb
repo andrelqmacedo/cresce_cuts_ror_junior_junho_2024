@@ -6,71 +6,61 @@ class Order < ApplicationRecord
 
   validates :total, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  STATUS = ["pending", "processing", "confirmed", "en_route", "ready_for_pickup"]
-  validates :status, presence: true, inclusion: { in: STATUS }
+  enum status: { pending: 0, processing: 1, confirmed: 2, en_route: 3, ready_for_pickup: 4 }
+  validates :status, presence: true
 
-  PAYMENT_STATUS = ["pending", "paid", "cancelled"]
-  validates :payment_status, presence: true, inclusion: { in: PAYMENT_STATUS }
+  enum payment_status: { unsettled: 0, paid: 1, cancelled: 2 }
+  validates :payment_status, presence: true
+
+  after_update :adjust_stock, if: :saved_change_to_status?
 
   def calculate_total
-    total = 0
-    self.order_items.each do |order_item|
-      total += order_item.item.price * order_item.quantity
-    end
-    self.update(total: total)
+    total = order_items.sum(&:total)
+    update(total: total)
   end
 
-  def process_items
-    if self.status == "pending"
-      self.update(status: "processing")
+  def update_status(new_status)
+    update(status: new_status)
+    case new_status
+    when "processing"
       puts "A loja aceitou seu pedido! Pedido em separação!"
-    else
-      raise "O pedido não pôde ser separado, pois não está pendente!"
+    when "confirmed"
+      if all_items_present?
+        puts "Os itens escolhidos foram separados! Pedido confirmado!"
+      else
+        raise "O pedido não pôde ser confirmado, pois não foi separado!"
+      end
+    when "en_route"
+      if payment_status == "paid"
+        puts "Pagamento recebido! O pedido está em rota de entrega!"
+      else
+        raise "O pedido não pôde ser colocado em rota de entrega, pois não foi confirmado!"
+      end
+    when "ready_for_pickup"
+      if payment_status == "paid"
+        puts "Pagamento recebido! O pedido está disponível para retirada!"
+      else
+        raise "O pedido não está disponível para retirada, pois não foi confirmado!"
+      end
     end
   end
 
-  def confirm_items
-    if self.status == "processing" && all_items_present?
-      self.update(status: "confirmed")
-      puts "Os itens escolhidos foram separados! Pedido confirmado!"
-    else
-      raise "O pedido não pôde ser confirmado, pois não foi separado!"
+  private
+
+  def adjust_stock
+    if status_previously_changed? && (saved_change_to_status? && (status == "paid" || status == "cancelled"))
+      order_items.each do |order_item|
+        item = order_item.item
+        if status == "paid"
+          item.decrement!(:stock_quantity, order_item.quantity)
+        elsif status == "cancelled"
+          item.increment!(:stock_quantity, order_item.quantity)
+        end
+      end
     end
   end
-
-  def ship_order
-    order = Order.find(self.id)
-    if self.status == "confirmed" && self.payment_status == "paid"
-      self.update(status: "en_route")
-      puts "Pagamento recebido! O pedido está em rota de entrega!"
-    else
-      raise "O pedido não pôde ser colocado em rota de entrega, pois não foi confirmado!"
-    end
-  end
-
-  def make_ready_for_pickup
-    order = Order.find(self.id)
-    if self.status == "confirmed" && self.payment_status == "paid"
-      self.update(status: "ready_for_pickup")
-      puts "Pagamento recebido! O pedido está disponível para retirada!"
-    else
-      raise "O pedido não está disponível para retirada, pois não foi confirmado!"
-    end
-  end
-
-  # private
 
   def all_items_present?
-    self.order_items.all? { |item| item.present? }
-  end
-
-  def payment_received?
-    if self.payment_status == "paid"
-      puts "Pagamento confirmado!"
-      return true
-    else
-      puts "O pagamento ainda não foi finalizado!"
-      return false
-    end
+    order_items.all? { |item| item.present? }
   end
 end

@@ -66,7 +66,7 @@ Customer.all.each do |customer|
     store: store,
     total: 0,
     status: "pending",
-    payment_status: "pending"
+    payment_status: "unsettled"
   )
 
   3.times do
