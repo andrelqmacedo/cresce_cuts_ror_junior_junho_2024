@@ -66,7 +66,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_04_180410) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "payment_status", default: "pending"
+    t.string "payment_status"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["store_id"], name: "index_orders_on_store_id"
   end

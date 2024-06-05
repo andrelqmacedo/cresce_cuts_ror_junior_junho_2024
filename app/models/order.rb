@@ -12,6 +12,14 @@ class Order < ApplicationRecord
   PAYMENT_STATUS = ["pending", "paid", "cancelled"]
   validates :payment_status, presence: true, inclusion: { in: PAYMENT_STATUS }
 
+  def calculate_total
+    total = 0
+    self.order_items.each do |order_item|
+      total += order_item.item.price * order_item.quantity
+    end
+    self.update(total: total)
+  end
+
   def process_items
     if self.status == "pending"
       self.update(status: "processing")
@@ -32,7 +40,7 @@ class Order < ApplicationRecord
 
   def ship_order
     order = Order.find(self.id)
-    if self.status == "confirmed" && payment_received?
+    if self.status == "confirmed" && self.payment_status == "paid"
       self.update(status: "en_route")
       puts "Pagamento recebido! O pedido está em rota de entrega!"
     else
@@ -42,7 +50,7 @@ class Order < ApplicationRecord
 
   def make_ready_for_pickup
     order = Order.find(self.id)
-    if self.status == "confirmed" && payment_received?
+    if self.status == "confirmed" && self.payment_status == "paid"
       self.update(status: "ready_for_pickup")
       puts "Pagamento recebido! O pedido está disponível para retirada!"
     else
@@ -57,8 +65,12 @@ class Order < ApplicationRecord
   end
 
   def payment_received?
-    unless payment_status == "paid"
-      raise "O pagamento ainda não foi finalizado!"
+    if self.payment_status == "paid"
+      puts "Pagamento confirmado!"
+      return true
+    else
+      puts "O pagamento ainda não foi finalizado!"
+      return false
     end
   end
 end

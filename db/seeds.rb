@@ -10,6 +10,13 @@
 
 require "faker"
 
+def show_spinner(msg_start, msg_end = "Done!")
+  spinner = TTY::Spinner.new("[:spinner] #{msg_start}")
+  spinner.auto_spin
+  yield
+  spinner.success("(#{msg_end})")
+end
+
 #Criação de lojas
 5.times do
   Store.create!(
@@ -57,7 +64,7 @@ Customer.all.each do |customer|
   order = Order.create!(
     customer: customer,
     store: store,
-    total: Faker::Commerce.price,
+    total: 0,
     status: "pending",
     payment_status: "pending"
   )
@@ -71,10 +78,5 @@ Customer.all.each do |customer|
     )
   end
 
-  def show_spinner(msg_start, msg_end = "Done!")
-    spinner = TTY::Spinner.new("[:spinner] #{msg_start}")
-    spinner.auto_spin
-    yield
-    spinner.success("(#{msg_end})")
-  end
+  order.calculate_total
 end
