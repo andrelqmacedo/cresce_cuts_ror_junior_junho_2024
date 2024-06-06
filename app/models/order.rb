@@ -14,6 +14,10 @@ class Order < ApplicationRecord
 
   after_update :adjust_stock, if: :saved_change_to_status?
 
+  def calculate_total
+    OrderTotalCalculatorService.new(self).calculate
+  end
+
 #   def update_status(new_status)
 #     update(status: new_status)
 #     case new_status
