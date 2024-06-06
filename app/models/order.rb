@@ -26,7 +26,6 @@ class Order < ApplicationRecord
     OrderUpdaterService.new(self).update_payment_status(new_status)
   end
 
-
   private
 
   def adjust_stock
