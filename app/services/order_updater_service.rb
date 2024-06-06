@@ -7,7 +7,6 @@ class OrderUpdaterService
     @order.update(status: new_status)
 
     case new_status
-
     when "processing"
       puts "A loja aceitou seu pedido! Pedido em separação!"
     when "confirmed"

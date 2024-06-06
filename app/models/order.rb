@@ -22,22 +22,18 @@ class Order < ApplicationRecord
     OrderUpdaterService.new(self).update_status(new_status)
   end
 
-#   private
+  private
 
-#   def adjust_stock
-#     if status_previously_changed? && (saved_change_to_status? && (status == "paid" || status == "cancelled"))
-#       order_items.each do |order_item|
-#         item = order_item.item
-#         if status == "paid"
-#           item.decrement!(:stock_quantity, order_item.quantity)
-#         elsif status == "cancelled"
-#           item.increment!(:stock_quantity, order_item.quantity)
-#         end
-#       end
-#     end
-#   end
-
-#   def all_items_present?
-#     order_items.all? { |item| item.present? }
-#   end
+  def adjust_stock
+    if status_previously_changed? && (saved_change_to_status? && (status == "paid" || status == "cancelled"))
+      order_items.each do |order_item|
+        item = order_item.item
+        if status == "paid"
+          item.decrement!(:stock_quantity, order_item.quantity)
+        elsif status == "cancelled"
+          item.increment!(:stock_quantity, order_item.quantity)
+        end
+      end
+    end
+  end
 end
