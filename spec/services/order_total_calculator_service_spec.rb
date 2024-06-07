@@ -9,13 +9,7 @@ RSpec.describe OrderTotalCalculatorService do
     @item2 = Item.create!(name: "Item 2", price: 5.0, stock_quantity: 10, description: "Segundo item")
     @order_item1 = OrderItem.create!(order: @order, item: @item1, quantity: 2)
     @order_item2 = OrderItem.create!(order: @order, item: @item2, quantity: 3)
-
-    # Adicionar verificações adicionais
     @order.reload
-    puts "Order ID: #{@order.id}"
-    puts "OrderItem 1: #{@order_item1.inspect}"
-    puts "OrderItem 2: #{@order_item2.inspect}"
-    puts "Order Items: #{@order.order_items.inspect}"
   end
 
   describe '#calculate' do
@@ -38,7 +32,7 @@ RSpec.describe OrderTotalCalculatorService do
 
       # Verificar o total calculado manualmente
       expected_total = 2 * 10.0 + 3 * 5.0
-      expect(@order.total).to be_within(0.01).of(expected_total)
+      expect(@order.total).to eq(expected_total)
     end
   end
 end
