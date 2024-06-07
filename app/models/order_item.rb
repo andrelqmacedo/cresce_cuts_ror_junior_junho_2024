@@ -8,7 +8,6 @@ class OrderItem < ApplicationRecord
   after_commit :recalculate_order_total, on: [:create, :update, :destroy]
 
   def total
-    puts "OrderItem total: #{quantity * item.price}" # Debug
     quantity * item.price
   end
 
