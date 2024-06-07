@@ -29,13 +29,13 @@ class Order < ApplicationRecord
   private
 
   def adjust_stock
-    if status_previously_changed? && (saved_change_to_status? && (status == "paid" || status == "cancelled"))
+    if payment_status_previously_changed? && (saved_change_to_payment_status? && (payment_status == "paid" || payment_status == "cancelled"))
       order_items.each do |order_item|
         item = order_item.item
-        if status == "paid"
-          item.decrement!(:stock_quantity, order_item.quantity)
-        elsif status == "cancelled"
-          item.increment!(:stock_quantity, order_item.quantity)
+        if payment_status == "paid"
+          item.decrement!(stock_quantity, order_item.quantity)
+        elsif payment_status == "cancelled"
+          item.increment!(stock_quantity, order_item.quantity)
         end
       end
     end
