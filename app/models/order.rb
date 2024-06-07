@@ -40,4 +40,14 @@ class Order < ApplicationRecord
       end
     end
   end
+
+  def minimum_stock_quantity_alert
+    order_items.each do |order_item|
+      item = order_item.item
+      if item.stock_quantity <= 2
+        puts "Alerta: Estoque abaixo do limite mínimo! O item #{item.name} possui apenas #{item.stock_quantity} unidades restantes."
+      end
+    end
+  end
+
 end

@@ -74,7 +74,7 @@ Customer.all.each do |customer|
     OrderItem.create!(
       order: order,
       item: item,
-      quantity: Faker::Number.between(from: 1, to: 5)
+      quantity: Faker::Number.between(from: 3, to: 10)
     )
   end
 
