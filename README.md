@@ -1,6 +1,6 @@
-*E-commerce Backend Application*
+## *E-commerce Backend Application*
 
-Esta é uma aplicação backend de um ecommerce, com CRUD completo para Loja, Cliente, Pedido, Item e Carrinho, manipulável via console do Rails, referente ao desafio prático para vaga de Desenvolvedor Ruby on Rails Júnior.
+Esta é uma aplicação backend de um ecommerce, com CRUD completo para Loja, Cliente, Pedido, Item e Carrinho, manipulável via console do Rails, referente ao desafio prático para vaga de Desenvolvedor Ruby on Rails Júniorq.
 
 ## *Pré-requisitos*
 
