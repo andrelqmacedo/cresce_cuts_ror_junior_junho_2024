@@ -12,42 +12,33 @@ class Order < ApplicationRecord
   enum payment_status: { unsettled: 0, paid: 1, cancelled: 2 }
   validates :payment_status, presence: true
 
-  after_update :adjust_stock, if: :saved_change_to_status?
+  after_update :adjust_stock
 
   def calculate_total
     OrderTotalCalculatorService.new(self).calculate
   end
 
   def update_status(new_status)
-    OrderUpdaterService.new(self).update_status(new_status)
+    OrderStatusUpdaterService.new(self).call(new_status)
   end
 
   def update_payment_status(new_status)
-    OrderUpdaterService.new(self).update_payment_status(new_status)
+    OrderPaymentStatusUpdaterService.new(self).call(new_status)
   end
 
   private
 
   def adjust_stock
-    if payment_status_previously_changed? && (saved_change_to_payment_status? && (payment_status == "paid" || payment_status == "cancelled"))
-      order_items.each do |order_item|
-        item = order_item.item
-        if payment_status == "paid"
-          item.decrement!(item.stock_quantity, order_item.quantity)
-        elsif payment_status == "cancelled"
-          item.increment!(item.stock_quantity, order_item.quantity)
-        end
-      end
-    end
+      InventoryAdjustmentService.new(self).call
   end
 
-  def minimum_stock_quantity_alert
-    order_items.each do |order_item|
-      item = order_item.item
-      if item.stock_quantity <= 2
-        puts "Alerta: Estoque abaixo do limite mínimo! O item #{item.name} possui apenas #{item.stock_quantity} unidades restantes."
-      end
-    end
-  end
+#   def minimum_stock_quantity_alert
+#     order_items.each do |order_item|
+#       item = order_item.item
+#       if item.stock_quantity <= 2
+#         puts "Alerta: Estoque abaixo do limite mínimo! O item #{item.name} possui apenas #{item.stock_quantity} unidades restantes."
+#       end
+#     end
+#   end
 
 end

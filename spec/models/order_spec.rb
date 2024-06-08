@@ -26,12 +26,12 @@ RSpec.describe Order, type: :model do
     end
 
     it "decrements the stock quantity when order is marked as paid" do
-      @order.update(payment_status: "paid")
+      @order.update_payment_status("paid")
       expect(@item.reload.stock_quantity).to eq(8)
     end
 
     it "increments the stock quantity when order is marked as cancelled" do
-      @order.update(payment_status: "cancelled")
+      @order.update_payment_status("cancelled")
       expect(@item.reload.stock_quantity).to eq(12)
     end
 

@@ -1,9 +1,9 @@
-class OrderUpdaterService
+class OrderStatusUpdaterService
   def initialize(order)
     @order = order
   end
 
-  def update_status(new_status)
+  def call(new_status)
 
     case new_status
     when "processing"
@@ -11,9 +11,11 @@ class OrderUpdaterService
       puts "A loja aceitou seu pedido! Pedido em separação!"
     when "confirmed"
       if all_items_present?
+        puts "Primeira ocorrência, OrderItem: #{@order.order_items}"     
         @order.update(status: new_status)
         puts "Os itens escolhidos foram separados! Pedido confirmado!"
       else
+        puts "Segunda ocorrêncoa, OrderItem: #{@order.order_items}"
         raise "O pedido não pôde ser confirmado, pois não foi separado!"
       end
     when "en_route"
@@ -33,20 +35,9 @@ class OrderUpdaterService
     end
   end
 
-  def update_payment_status(new_status)
-    case new_status
-    when "paid"
-      @order.update(payment_status: new_status)
-      puts "Pagamento recebido!"
-    when "cancelled"
-      @order.update(payment_status: new_status)
-      puts "Pagamento não identificado!"
-    end
-  end
-
   private
 
   def all_items_present?
-    @order.order_items.all? { |item| item.present? }
+    @order.order_items.any? && @order.order_items.all? { |item| item.quantity > 0 }
   end
 end
