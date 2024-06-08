@@ -12,29 +12,29 @@ Esta é uma aplicação backend de um ecommerce, com CRUD completo para Loja, Cl
 
 ## 1. Clone o repositório:
 
-    ```sh
+    ```
     git clone XXXXXXXX
     cd ecommerce-backend
     ```
 
 ## 2. Instale as dependências:
 
-    ```sh
+    ```
     bundle install
     ```
 
 ## 3. Configure o banco de dados:
 
-    ```sh
+    ```
     rails db:create
     rails db:migrate
     ```
 
 ## 4. Popule o banco de dados com dados iniciais:
 
-    ```sh
+    ```
     rails db:seed
     ```
 
-## 5. Manipulando Dados via Console do Rails
+## *Manipulando Dados via Console do Rails*
 
