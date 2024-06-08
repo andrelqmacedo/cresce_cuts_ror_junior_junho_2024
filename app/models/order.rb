@@ -33,9 +33,9 @@ class Order < ApplicationRecord
       order_items.each do |order_item|
         item = order_item.item
         if payment_status == "paid"
-          item.decrement!(stock_quantity, order_item.quantity)
+          item.decrement!(item.stock_quantity, order_item.quantity)
         elsif payment_status == "cancelled"
-          item.increment!(stock_quantity, order_item.quantity)
+          item.increment!(item.stock_quantity, order_item.quantity)
         end
       end
     end
