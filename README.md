@@ -75,8 +75,9 @@ Esta é uma aplicação backend de um ecommerce, com CRUD completo para Loja, Cl
     carrinho.destroy # Deleta o carrinho 
     ```
 ### 6.CRUD para Pedido:
+#### Obs: Para criar o pedido, precisamos que exista uma instância de cliente e uma de loja.´
     ```
-    pedido = Order.create(customer: 1, store: 1, total: 0.0, status: "pending", payment_status: "unsettled") #Cria pedido
+    pedido = Order.create(customer: cliente, store: loja, total: 0.0, status: "pending", payment_status: "unsettled") #Cria pedido
     p pedido # Lê e exibe os detalhes do pedido
     pedido.update(payment_status: "paid") # Atualiza o status do pagamento do pedido para "pago". OBS: Essa manipulação é melhor feita através do método próprio para isso, como será demonstrado adiante.
     pedido.destroy # Deleta o pedido
@@ -123,11 +124,7 @@ Esta é uma aplicação backend de um ecommerce, com CRUD completo para Loja, Cl
 
 ## *Rodando testes da aplicação*
 
-### Para rodar os testes da aplicação, devemos primeiramente entrar no Rails Console:
-    ```
-    rails c
-    ```
-### Em seguida, o administrador poderá rodar todos os testes (com RSpec):
+### Para rodar todos os testes da aplicação, devemos rodar o seguinte comando na raiz do projeto:
     ```
     rspec
     ```
