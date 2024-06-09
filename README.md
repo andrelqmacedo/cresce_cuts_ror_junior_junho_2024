@@ -68,6 +68,9 @@ Esta é uma aplicação backend de um ecommerce, com CRUD completo para Loja, Cl
     
 ### 6.CRUD para Pedido:
 #### Obs: Para criar o pedido, precisamos que exista uma instância de cliente e uma de loja.´
+
+    cliente = Customer.create(name: "Stanislau Roberto", email: "sroberto@gmai.com", address: "Rua do Meio, n. 889") # Cria cliente
+    loja = Store.create(name: "Nome da Loja", description: "Descrição da loja", address: "Endereço da Loja" ) # Cria loja
     
     pedido = Order.create(customer: cliente, store: loja, total: 0.0, status: "pending", payment_status: "unsettled") #Cria pedido
     p pedido # Lê e exibe os detalhes do pedido
