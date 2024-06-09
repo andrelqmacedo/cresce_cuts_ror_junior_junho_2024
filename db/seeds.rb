@@ -10,13 +10,6 @@
 
 require "faker"
 
-def show_spinner(msg_start, msg_end = "Done!")
-  spinner = TTY::Spinner.new("[:spinner] #{msg_start}")
-  spinner.auto_spin
-  yield
-  spinner.success("(#{msg_end})")
-end
-
 # Criação de lojas
 5.times do
   Store.create!(
