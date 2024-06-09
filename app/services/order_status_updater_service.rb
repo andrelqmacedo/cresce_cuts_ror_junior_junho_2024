@@ -10,12 +10,10 @@ class OrderStatusUpdaterService
       @order.update(status: new_status)
       puts "A loja aceitou seu pedido! Pedido em separação!"
     when "confirmed"
-      if all_items_present?
-        puts "Primeira ocorrência, OrderItem: #{@order.order_items}"     
+      if all_items_present?   
         @order.update(status: new_status)
         puts "Os itens escolhidos foram separados! Pedido confirmado!"
       else
-        puts "Segunda ocorrêncoa, OrderItem: #{@order.order_items}"
         raise "O pedido não pôde ser confirmado, pois não foi separado!"
       end
     when "en_route"
@@ -38,6 +36,6 @@ class OrderStatusUpdaterService
   private
 
   def all_items_present?
-    @order.order_items.any? && @order.order_items.all? { |item| item.quantity > 0 }
+    @order.order_items.any? && @order.order_items.all? { |order_item| order_item.quantity > 0 }
   end
 end

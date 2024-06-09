@@ -13,7 +13,7 @@ RSpec.describe OrderStatusUpdaterService do
     @service = OrderStatusUpdaterService.new(@order)
   end
 
-  context '#update_status' do
+  context 'update_status' do
     it 'updates status to processing' do
       expect { @service.call('processing') }.to change { @order.status }.from('pending').to('processing')
       expect { puts "A loja aceitou seu pedido! Pedido em separação!" }.to output.to_stdout

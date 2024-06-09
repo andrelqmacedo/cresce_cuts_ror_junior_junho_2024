@@ -13,7 +13,7 @@ RSpec.describe OrderPaymentStatusUpdaterService do
     @service = OrderPaymentStatusUpdaterService.new(@order)
   end
 
-  context '#update_payment_status' do
+  context 'update_payment_status' do
     it 'updates payment status to paid' do
       expect { @service.call('paid') }.to change { @order.payment_status }.from('unsettled').to('paid')
       expect { puts "Pagamento recebido!" }.to output.to_stdout
