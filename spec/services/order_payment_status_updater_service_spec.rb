@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe OrderPaymentStatusUpdaterService do
   before do
@@ -13,14 +13,14 @@ RSpec.describe OrderPaymentStatusUpdaterService do
     @service = OrderPaymentStatusUpdaterService.new(@order)
   end
 
-  context 'update_payment_status' do
-    it 'updates payment status to paid' do
-      expect { @service.call('paid') }.to change { @order.payment_status }.from('unsettled').to('paid')
+  context "update_payment_status" do
+    it "updates payment status to paid" do
+      expect { @service.call("paid") }.to change { @order.payment_status }.from("unsettled").to("paid")
       expect { puts "Pagamento recebido!" }.to output.to_stdout
     end
 
-    it 'updates payment status to cancelled' do
-      expect { @service.call('cancelled') }.to change { @order.payment_status }.from('unsettled').to('cancelled')
+    it "updates payment status to cancelled" do
+      expect { @service.call("cancelled") }.to change { @order.payment_status }.from("unsettled").to("cancelled")
       expect { puts "Pagamento não identificado!" }.to output.to_stdout
     end
   end

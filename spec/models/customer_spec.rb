@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Customer, type: :model do
   context "associations" do
@@ -12,7 +12,7 @@ RSpec.describe Customer, type: :model do
     it { should validate_presence_of(:address) }
 
     it { should validate_uniqueness_of(:email) }
-    it { should allow_value('example@example.com').for(:email) }
-    it { should_not allow_value('invalid_email').for(:email) }
+    it { should allow_value("example@example.com").for(:email) }
+    it { should_not allow_value("invalid_email").for(:email) }
   end
 end

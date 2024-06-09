@@ -4,12 +4,12 @@ class Order < ApplicationRecord
   has_many :order_items
   has_many :items, through: :order_items
 
-  validates :total, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :total, presence: true, numericality: {greater_than_or_equal_to: 0}
 
-  enum status: { pending: 0, processing: 1, confirmed: 2, en_route: 3, ready_for_pickup: 4 }
+  enum status: {pending: 0, processing: 1, confirmed: 2, en_route: 3, ready_for_pickup: 4}
   validates :status, presence: true
 
-  enum payment_status: { unsettled: 0, paid: 1, cancelled: 2 }
+  enum payment_status: {unsettled: 0, paid: 1, cancelled: 2}
   validates :payment_status, presence: true
 
   after_update :adjust_stock
@@ -29,11 +29,10 @@ class Order < ApplicationRecord
   private
 
   def adjust_stock
-      InventoryAdjustmentService.new(self).call
+    InventoryAdjustmentService.new(self).call
   end
 
-#   def minimum_stock_quantity_alert
-#     InventoryAlertService.new(self).call
-#   end
-
+  #   def minimum_stock_quantity_alert
+  #     InventoryAlertService.new(self).call
+  #   end
 end

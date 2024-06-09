@@ -17,7 +17,7 @@ def show_spinner(msg_start, msg_end = "Done!")
   spinner.success("(#{msg_end})")
 end
 
-#Criação de lojas
+# Criação de lojas
 5.times do
   Store.create!(
     name: Faker::Company.name,
@@ -26,7 +26,7 @@ end
   )
 end
 
-#Criação de clientes
+# Criação de clientes
 10.times do
   Customer.create!(
     name: Faker::Name.name,
@@ -35,7 +35,7 @@ end
   )
 end
 
-#Criação de items
+# Criação de items
 30.times do
   Item.create!(
     name: Faker::Commerce.product_name,
@@ -45,11 +45,11 @@ end
   )
 end
 
-#Criação de carrinho
+# Criação de carrinho
 Customer.all.each do |customer|
   cart = Cart.create!(customer: customer)
   5.times do
-    item = Item.order('RANDOM()').first
+    item = Item.order("RANDOM()").first
     CartItem.create!(
       cart: cart,
       item: item,
@@ -58,9 +58,9 @@ Customer.all.each do |customer|
   end
 end
 
-#Criação de pedidos
+# Criação de pedidos
 Customer.all.each do |customer|
-  store = Store.order('RANDOM()').first
+  store = Store.order("RANDOM()").first
   order = Order.create!(
     customer: customer,
     store: store,
@@ -70,7 +70,7 @@ Customer.all.each do |customer|
   )
 
   3.times do
-    item = Item.order('RANDOM()').first
+    item = Item.order("RANDOM()").first
     OrderItem.create!(
       order: order,
       item: item,

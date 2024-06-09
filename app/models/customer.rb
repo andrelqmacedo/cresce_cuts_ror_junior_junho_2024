@@ -4,5 +4,5 @@ class Customer < ApplicationRecord
 
   validates :name, :email, :address, presence: true
 
-  validates :email, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}
 end

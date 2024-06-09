@@ -4,13 +4,12 @@ class OrderStatusUpdaterService
   end
 
   def call(new_status)
-
     case new_status
     when "processing"
       @order.update(status: new_status)
       puts "A loja aceitou seu pedido! Pedido em separação!"
     when "confirmed"
-      if all_items_present?   
+      if all_items_present?
         @order.update(status: new_status)
         puts "Os itens escolhidos foram separados! Pedido confirmado!"
       else

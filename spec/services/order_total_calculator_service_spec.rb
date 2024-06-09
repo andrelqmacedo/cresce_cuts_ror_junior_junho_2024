@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe OrderTotalCalculatorService do
   before do
@@ -12,8 +12,8 @@ RSpec.describe OrderTotalCalculatorService do
     @order.reload
   end
 
-  describe '#calculate' do
-    it 'calculates the total for the order' do
+  describe "#calculate" do
+    it "calculates the total for the order" do
       service = OrderTotalCalculatorService.new(@order)
       service.calculate
 

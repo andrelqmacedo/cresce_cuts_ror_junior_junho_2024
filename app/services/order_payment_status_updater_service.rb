@@ -1,10 +1,9 @@
-
 class OrderPaymentStatusUpdaterService
-    def initialize(order)
-      @order = order
-    end
+  def initialize(order)
+    @order = order
+  end
 
-def call(new_status)
+  def call(new_status)
     case new_status
     when "paid"
       @order.update(payment_status: new_status)

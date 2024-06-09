@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe InventoryAdjustmentService do
   before do
@@ -12,35 +12,35 @@ RSpec.describe InventoryAdjustmentService do
     @order.reload
   end
 
-  describe '#call' do
-    context 'when payment status is not changed' do
-      it 'does not adjust stock' do
-        @order.update(payment_status: 'unsettled')
+  describe "#call" do
+    context "when payment status is not changed" do
+      it "does not adjust stock" do
+        @order.update(payment_status: "unsettled")
         InventoryAdjustmentService.new(@order).call
 
         expect(@order.order_items.first.item.stock_quantity).to eq(@order.order_items.first.quantity)
       end
     end
 
-    context 'when payment status is changed to paid' do
-      it 'decrements stock for each order item' do
+    context "when payment status is changed to paid" do
+      it "decrements stock for each order item" do
         order_item = OrderItem.new(order: @order, item: @item1, quantity: 2)
         order_item.save!
 
-        @order.update(payment_status: 'unsettled')
-        @order.update(payment_status: 'paid')
+        @order.update(payment_status: "unsettled")
+        @order.update(payment_status: "paid")
 
         expect(@order.order_items.first.item.stock_quantity).to eq(0)
       end
     end
 
-    context 'when payment status is changed to cancelled' do
-      it 'increments stock for each order item' do
+    context "when payment status is changed to cancelled" do
+      it "increments stock for each order item" do
         order_item = OrderItem.new(order: @order, item: @item1, quantity: 2)
         order_item.save!
 
-        @order.update(payment_status: 'paid')
-        @order.update(payment_status: 'cancelled')
+        @order.update(payment_status: "paid")
+        @order.update(payment_status: "cancelled")
 
         expect(@order.order_items.first.item.stock_quantity).to eq(2)
       end
