@@ -92,7 +92,7 @@ Esta é uma aplicação backend de um ecommerce, com CRUD completo para Loja, Cl
     
     pedido.update_payment_status("paid")
 
-#### OBS: Quando o status de pagamento do pedido for alterado para pago ("paid") a quantidade de estoque daquele item será decrementada na quantidade de itens do pedido.
+#### Obs: Quando o status de pagamento do pedido for alterado para pago ("paid") a quantidade de estoque daquele item será decrementada na quantidade de itens do pedido.
     
 ### 4. Uma vez que o status do pagamento do pedido tenha sido alterado para pago ("paid"), será possível escolher se o status do pedido será alterado para "em rota"("en_route") ou "disponível para retirada"("ready_for_pickup")::
     
