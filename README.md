@@ -86,15 +86,15 @@ Esta é uma aplicação backend de um ecommerce, com CRUD completo para Loja, Cl
     
     pedido.update_status("confirmed")
       
-### O método #update_status irá confirmar, através do serviço de atualização do status do pedido (OrderStatusUpdaterService) se todos os itens estão presentes (isto é, se a quantidade de cada item de pedido é maior do que zero) para em seguida alterar o status do pedido. Caso algum item do pedido não esteja presente, uma mensagem de erro será disparada.
+#### O método #update_status irá confirmar, através do serviço de atualização do status do pedido (OrderStatusUpdaterService) se todos os itens estão presentes (isto é, se a quantidade de cada item de pedido é maior do que zero) para em seguida alterar o status do pedido. Caso algum item do pedido não esteja presente, uma mensagem de erro será disparada.
 
 ### 3. Para alterar o status do pedido de "confirmado" ("confirmed") para "em rota" ("en_route") ou "disponível para retirada" ("ready_for_pickup"), primeiro devemos alterar o status do pagamento do pedido:
     
     pedido.update_payment_status("paid")
 
-### OBS: Quando o status de pagamento do pedido for alterado para pago ("paid") a quantidade de estoque daquele item será decrementada na quantidade de itens do pedido.
+#### OBS: Quando o status de pagamento do pedido for alterado para pago ("paid") a quantidade de estoque daquele item será decrementada na quantidade de itens do pedido.
     
-### Uma vez que o status do pagamento do pedido tenha sido alterado para pago ("paid"), será possível escolher se o status do pedido será alterado para "em rota"("en_route") ou "disponível para retirada"("ready_for_pickup")::
+### 4. Uma vez que o status do pagamento do pedido tenha sido alterado para pago ("paid"), será possível escolher se o status do pedido será alterado para "em rota"("en_route") ou "disponível para retirada"("ready_for_pickup")::
     
     pedido.update_status("en_route")
     #ou
