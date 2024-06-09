@@ -12,10 +12,10 @@ Esta é uma aplicação backend de um ecommerce, com CRUD completo para Loja, Cl
 
 ### 1. Clone o repositório:
 
-    ```
+    
     git clone https://github.com/andrelqmacedo/cresce_cuts_ror_junior_junho_2024.git
     cd cresce_cuts_ror_junior_junho_2024
-    ```
+    
 
 ### 2. Instale as dependências:
 
