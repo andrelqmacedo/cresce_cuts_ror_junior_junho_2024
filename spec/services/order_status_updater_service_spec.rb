@@ -30,23 +30,23 @@ RSpec.describe OrderStatusUpdaterService do
     end
 
     it "updates status to en_route if payment is paid" do
-      @order.update(payment_status: "paid")
-      expect { @service.call("en_route") }.to change { @order.status }.from("pending").to("en_route")
+      @order.update(status: "confirmed", payment_status: "paid")
+      expect { @service.call("en_route") }.to change { @order.status }.from("confirmed").to("en_route")
       expect { puts "Pagamento recebido! O pedido está em rota de entrega!" }.to output.to_stdout
     end
 
     it "raises error if status is en_route but payment is not paid" do
-      expect { @service.call("en_route") }.to raise_error("O pedido não pôde ser colocado em rota de entrega, pois o pagamento ainda não confirmado!")
+      expect { @service.call("en_route") }.to raise_error("O pedido não pôde ser colocado em rota de entrega, pois o pagamento não foi confirmado ou o pedido ainda não foi confirmado!")
     end
 
     it "updates status to ready_for_pickup if payment is paid" do
-      @order.update(payment_status: "paid")
-      expect { @service.call("ready_for_pickup") }.to change { @order.status }.from("pending").to("ready_for_pickup")
+      @order.update(status: "confirmed", payment_status: "paid")
+      expect { @service.call("ready_for_pickup") }.to change { @order.status }.from("confirmed").to("ready_for_pickup")
       expect { puts "Pagamento recebido! O pedido está disponível para retirada!" }.to output.to_stdout
     end
 
     it "raises error if status is ready_for_pickup but payment is not paid" do
-      expect { @service.call("ready_for_pickup") }.to raise_error("O pedido não está disponível para retirada, pois o pagamento ainda não confirmado!")
+      expect { @service.call("ready_for_pickup") }.to raise_error("O pedido não está disponível para retirada, pois o pagamento não foi confirmado ou o pedido ainda não foi confirmado!")
     end
   end
 end

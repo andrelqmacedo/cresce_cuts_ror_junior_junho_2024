@@ -16,18 +16,18 @@ class OrderStatusUpdaterService
         raise "O pedido não pôde ser confirmado, pois não foi separado!"
       end
     when "en_route"
-      if @order.payment_status == "paid"
+      if @order.payment_status == "paid" && @order.status == "confirmed"
         @order.update(status: new_status)
         puts "Pagamento recebido! O pedido está em rota de entrega!"
       else
-        raise "O pedido não pôde ser colocado em rota de entrega, pois o pagamento ainda não confirmado!"
+        raise "O pedido não pôde ser colocado em rota de entrega, pois o pagamento não foi confirmado ou o pedido ainda não foi confirmado!"
       end
     when "ready_for_pickup"
-      if @order.payment_status == "paid"
+      if @order.payment_status == "paid" && @order.status == "confirmed"
         @order.update(status: new_status)
         puts "Pagamento recebido! O pedido está disponível para retirada!"
       else
-        raise "O pedido não está disponível para retirada, pois o pagamento ainda não confirmado!"
+        raise "O pedido não está disponível para retirada, pois o pagamento não foi confirmado ou o pedido ainda não foi confirmado!"
       end
     end
   end
