@@ -11,7 +11,7 @@ RSpec.describe OrderItem, type: :model do
     it { should validate_numericality_of(:quantity).only_integer.is_greater_than(0) }
   end
 
-  context "after_save, after_update, after_destroy" do
+  context "after_create, after_update, before_destroy" do
     before(:each) do
       @customer = Customer.create!(name: "Cliente Teste", email: "clienteteste@teste.com", address: "Rua das Rosas, 456")
       @store = Store.create(name: "Loja Teste", description: "Uma loja teste", address: "Rua das Flores, 124")
@@ -37,13 +37,19 @@ RSpec.describe OrderItem, type: :model do
       expect(@order.total).to eq(3 * 10.0)
     end
 
-    it "recalculates the order total after destruction" do
+    it "recalculates the order total before destruction" do
+      puts "Order total: #{@order.total}"
       order_item1 = OrderItem.create(order: @order, item: @item1, quantity: 2)
+      puts "Order total: #{@order.total}"
       order_item2 = OrderItem.create(order: @order, item: @item2, quantity: 3)
-      @order.reload
+      puts "Order total: #{@order.total}"
+      p @order.order_items.to_json
       order_item1.destroy
+      @order.reload
+      p @order.order_items.to_json
+      puts "Order total: #{@order.total}"
 
-      expect(@order.total).to eq(3 * 5.0)
+      expect(@order.reload.total).to eq(3 * 5.0)
     end
   end
 end

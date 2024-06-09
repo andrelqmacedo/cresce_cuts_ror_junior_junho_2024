@@ -1,7 +1,7 @@
 class Order < ApplicationRecord
   belongs_to :customer
   belongs_to :store
-  has_many :order_items
+  has_many :order_items, dependent: :destroy
   has_many :items, through: :order_items
 
   validates :total, presence: true, numericality: {greater_than_or_equal_to: 0}
